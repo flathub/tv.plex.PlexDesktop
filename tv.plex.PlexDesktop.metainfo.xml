@@ -11,7 +11,9 @@
   <url type="homepage">https://plex.tv</url>
   <url type="help">https://support.plex.tv/articles/</url>
   <description>
-    <p>Plex for Linux is your client for playing on your Linux desktop computer</p>
+    <p>Plex for Linux is your client for playback on the Linux desktop. It features the point and
+    click interface you see in your browser but uses a more powerful playback engine as well as
+    some other advance features.</p>
   </description>
   <screenshots>
     <screenshot type="default">
@@ -28,6 +30,7 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.46.1" date="2022-06-10"/>
     <release version="1.46.1" date="2022-06-08"/>
   </releases>
   <content_rating type="oars-1.1"/>
