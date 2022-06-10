@@ -7,6 +7,7 @@ finish-args:
   - --socket=x11
   - --socket=pulseaudio
   - --device=all
+  - --device=dri
   - --share=ipc
   - --share=network
   - --talk-name=org.freedesktop.ScreenSaver
