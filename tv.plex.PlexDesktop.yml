@@ -10,6 +10,7 @@ finish-args:
   - --share=ipc
   - --share=network
   - --talk-name=org.freedesktop.ScreenSaver
+  - --system-talk-name=org.freedesktop.ScreenSaver
 cleanup:
   - /include
   - /bin/cjpeg
