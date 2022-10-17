@@ -54,7 +54,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/libevent/libevent/
-        branch: release-2.1.12-stable
+        tag: release-2.1.12-stable
     cleanup:
       - /bin
       - /include
@@ -73,9 +73,9 @@ modules:
   - name: libsnappy
     buildsystem: cmake-ninja
     config-opts:
-      - -DBUILD_SHARED_LIBS=ON
-      - -DSNAPPY_BUILD_TESTS=OFF
-      - -DCMAKE_BUILD_TYPE=Release
+      - "-DBUILD_SHARED_LIBS=ON"
+      - "-DSNAPPY_BUILD_TESTS=OFF"
+      - "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
     sources:
       - type: git
         url: https://github.com/google/snappy
