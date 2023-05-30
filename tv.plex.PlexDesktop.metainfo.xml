@@ -30,6 +30,7 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.70.2" date="2023-05-30"/>
     <release version="1.69.1" date="2023-05-11"/>
     <release version="1.68.2" date="2023-05-09"/>
     <release version="1.67.2" date="2023-04-11"/>
