@@ -113,5 +113,5 @@ modules:
       - mv /app/Plex.sh /app/bin/Plex
     sources:
       - type: archive
-        url: https://artifacts.plex.tv/plex-desktop-stable/1.76.2.3951-15712eae/linux/Plex-1.76.2.3951-15712eae-linux-x86_64.tar.bz2
-        sha256: 2b35f08786602c91f10063fb18883b9d746536233b1e8226e8b888118550da0b
+        url: https://artifacts.plex.tv/plex-desktop-stable/1.77.2.3964-15aa6346/linux/Plex-1.77.2.3964-15aa6346-linux-x86_64.tar.bz2
+        sha256: d8803d39fd811054282b47b354f2c3142189e9d7042f9c949d0e94af57f5b1b9
