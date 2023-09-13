@@ -61,15 +61,6 @@ modules:
       - /lib/pkgconfig
       - /lib/cmake
 
-  - name: libwebp
-    buildsystem: autotools
-    config-opts: [--disable-static, --enable-libwebpmux, --enable-libwebpdemux]
-    cleanup: [/share, /bin]
-    sources:
-      - type: archive
-        url: https://github.com/webmproject/libwebp/archive/refs/heads/0.5.1.zip
-        sha256: 55c5abdf0f153b26f89ad593181f0d7ff7aec03d6d51777598fe8d8c63a1eea0
-
   - name: libsnappy
     buildsystem: cmake-ninja
     config-opts:
