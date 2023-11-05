@@ -68,7 +68,7 @@ modules:
     sources:
       - type: archive
         url: https://github.com/webmproject/libwebp/archive/refs/heads/0.5.1.zip
-        sha256: 55c5abdf0f153b26f89ad593181f0d7ff7aec03d6d51777598fe8d8c63a1eea0
+        sha256: fdef2c0404b5868888008996438525d44fdb049327f92576579a32df4b30ea27
 
   - name: libsnappy
     buildsystem: cmake-ninja
