@@ -1,6 +1,6 @@
 app-id: tv.plex.PlexDesktop
 runtime: org.freedesktop.Platform
-runtime-version: '21.08'
+runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
 command: Plex
 finish-args:
@@ -12,14 +12,10 @@ finish-args:
   - --talk-name=org.freedesktop.ScreenSaver
 cleanup:
   - /include
-  - /bin/cjpeg
-  - /bin/djpeg
-  - /bin/jpegtran
-  - /bin/rdjpgcom
-  - /bin/tjbench
-  - /bin/wrjpgcom
-  - "*.a"
-  - "*.la"
+  - /lib/cmake
+  - /lib/pkgconfig
+  - '*.a'
+  - '*.la'
 modules:
   - name: plex-metadata
     buildsystem: simple
@@ -37,12 +33,14 @@ modules:
 
   - name: libjpeg # with libjpeg.so.8
     buildsystem: cmake-ninja
-    config-opts: &libjpeg_config_opts
+    config-opts:
       - -DCMAKE_SKIP_RPATH:BOOL=YES
       - -DENABLE_STATIC:BOOL=NO
       - -DWITH_JPEG8:BOOL=YES
+      - -DWITH_TURBOJPEG:BOOL=NO
       - -DCMAKE_INSTALL_LIBDIR=/app/lib # uses lib64 by default
-    sources: &libjpeg_sources
+    cleanup: [/share, /bin]
+    sources:
       - type: archive
         url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
         sha256: dbda0c685942aa3ea908496592491e5ec8160d2cf1ec9d5fd5470e50768e7859
@@ -51,24 +49,20 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DEVENT__LIBRARY_TYPE=SHARED
+    cleanup: [/bin]
     sources:
       - type: git
         url: https://github.com/libevent/libevent/
         tag: release-2.1.12-stable
-    cleanup:
-      - /bin
-      - /include
-      - /lib/pkgconfig
-      - /lib/cmake
 
   - name: libwebp
     buildsystem: autotools
-    config-opts: [--disable-static, --enable-libwebpmux, --enable-libwebpdemux]
+    config-opts: [--disable-static, --enable-libwebpmux, --disable-libwebpdemux]
     cleanup: [/share, /bin]
     sources:
       - type: archive
         url: https://github.com/webmproject/libwebp/archive/refs/heads/0.5.1.zip
-        sha256: 55c5abdf0f153b26f89ad593181f0d7ff7aec03d6d51777598fe8d8c63a1eea0
+        sha256: fdef2c0404b5868888008996438525d44fdb049327f92576579a32df4b30ea27
 
   - name: libsnappy
     buildsystem: cmake-ninja
@@ -87,8 +81,8 @@ modules:
       - --disable-static
     sources:
       - type: archive
-        url: https://zlib.net/zlib-1.2.13.tar.gz
-        sha256: b3a24de97a8fdbc835b9833169501030b8977031bcb54b3b3ac13740f846ab30
+        url: https://zlib.net/zlib-1.3.tar.gz
+        sha256: ff0ba4c292013dbc27530b3a81e1f9a813cd39de01ca5e0f8bf355702efa593e
         x-checker-data:
           type: anitya
           project-id: 5303
@@ -100,8 +94,6 @@ modules:
           - GLOBIGNORE=contrib/minizip && rm -rf contrib/*
           - rm -f contrib/minizip/Makefile
           - autoreconf -fiv contrib/minizip
-    cleanup:
-      - '*.la'
 
   - name: plex-binaries
     buildsystem: simple
@@ -111,6 +103,15 @@ modules:
       - sed -i 's/"\$BASE_DIR"\/bin\/Plex/"\$BASE_DIR"\/bin\/plex-bin/g' /app/Plex.sh
       - mv /app/bin/Plex /app/bin/plex-bin
       - mv /app/Plex.sh /app/bin/Plex
+    cleanup:
+      - /lib/dri
+      - /lib/libEGL.so*
+      - /lib/libdrm.so*
+      - /lib/libdrm_*.so*
+      - /lib/libpciaccess.so*
+      - /lib/libswresample.so*
+      - /lib/libva.so*
+      - /lib/libva-*.so*
     sources:
       - type: archive
         url: https://artifacts.plex.tv/plex-desktop-stable/1.84.1.4069-ff740b6d/linux/Plex-1.84.1.4069-ff740b6d-linux-x86_64.tar.bz2
