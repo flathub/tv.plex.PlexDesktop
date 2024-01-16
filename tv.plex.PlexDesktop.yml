@@ -54,7 +54,7 @@ modules:
       - type: git
         url: https://github.com/libevent/libevent/
         tag: release-2.1.12-stable
-
+    
   - name: libwebp
     buildsystem: autotools
     config-opts: [--disable-static, --enable-libwebpmux, --disable-libwebpdemux]
@@ -94,7 +94,7 @@ modules:
           - GLOBIGNORE=contrib/minizip && rm -rf contrib/*
           - rm -f contrib/minizip/Makefile
           - autoreconf -fiv contrib/minizip
-
+    
   - name: plex-binaries
     buildsystem: simple
     build-commands:
@@ -114,5 +114,5 @@ modules:
       - /lib/libva-*.so*
     sources:
       - type: archive
-        url: https://artifacts.plex.tv/plex-desktop-stable/1.84.1.4069-ff740b6d/linux/Plex-1.84.1.4069-ff740b6d-linux-x86_64.tar.bz2
-        sha256: cd594416070ac52df57d773a370c3019bd745b8e5f7abba551d41ca62baf3f72
+        url: https://artifacts.plex.tv/plex-desktop-stable/1.85.0.4071-21128b56/linux/Plex-1.85.0.4071-21128b56-linux-x86_64.tar.bz2
+        sha256: 241e2580eb493637c15a636cfa7851f2d9b32c891e6eee7b58bc764900059565
