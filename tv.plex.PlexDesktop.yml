@@ -114,5 +114,5 @@ modules:
       - /lib/libva-*.so*
     sources:
       - type: archive
-        url: https://artifacts.plex.tv/plex-desktop-stable/1.105.2.269-12a32491/linux/Plex-1.105.2.269-12a32491-linux-x86_64.tar.bz2
-        sha256: 90cdaf92064840f2fab0fd979844a50fa6efd3822a4dca9c0494968766791807
+        url: https://artifacts.plex.tv/plex-desktop-stable/1.106.0.276-fe8d1d20/linux/Plex-1.106.0.276-fe8d1d20-linux-x86_64.tar.bz2
+        sha256: b8d1d0eba9cf5e84ca9c605da2b78b0b2be285d245d78e0e228fd578d15ba79f
