@@ -8,10 +8,10 @@
   <summary>Plex client for desktop computers</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LicenseRef-proprietary=https://www.plex.tv/en-gb/about/privacy-legal/plex-terms-of-service/</project_license>
+  <url type="homepage">https://plex.tv</url>
+  <url type="help">https://support.plex.tv/articles/</url>
   <url type="bugtracker">https://forums.plex.tv/c/plex-players/computers/34</url>
   <url type="contact">https://www.plex.tv/contact/</url>
-  <url type="help">https://support.plex.tv/articles/</url>
-  <url type="homepage">https://plex.tv</url>
   <description>
     <p>Plex for Linux is your client for playback on the Linux desktop. It features the point and
     click interface you see in your browser but uses a more powerful playback engine as well as
