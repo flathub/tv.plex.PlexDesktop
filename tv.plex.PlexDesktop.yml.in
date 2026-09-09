@@ -1,6 +1,6 @@
 app-id: tv.plex.PlexDesktop
 runtime: org.freedesktop.Platform
-runtime-version: "23.08"
+runtime-version: "26.08"
 sdk: org.freedesktop.Sdk
 command: Plex
 finish-args:
@@ -39,6 +39,7 @@ modules:
       - -DWITH_JPEG8:BOOL=YES
       - -DWITH_TURBOJPEG:BOOL=NO
       - -DCMAKE_INSTALL_LIBDIR=/app/lib # uses lib64 by default
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5 # CMake 4 dropped < 3.5 compat
     cleanup: [/share, /bin]
     sources:
       - type: archive
@@ -49,6 +50,7 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DEVENT__LIBRARY_TYPE=SHARED
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5 # CMake 4 dropped < 3.5 compat
     cleanup: [/bin]
     sources:
       - type: git
@@ -70,6 +72,8 @@ modules:
       - "-DBUILD_SHARED_LIBS=ON"
       - "-DSNAPPY_BUILD_TESTS=OFF"
       - "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+      - "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" # CMake 4 dropped < 3.5 compat
+      - "-DCMAKE_INSTALL_LIBDIR=/app/lib" # uses lib64 by default, which is not on the loader path
     sources:
       - type: git
         url: https://github.com/google/snappy
@@ -95,6 +99,51 @@ modules:
           - rm -f contrib/minizip/Makefile
           - autoreconf -fiv contrib/minizip
 
+  # The runtime carries libxml2.so.16 (soname bumped in libxml2 2.14), but the
+  # Plex binaries and the bundled Qt WebEngine still link libxml2.so.2, so the
+  # last release of the 2.13 series is built here to provide it.
+  - name: libxml2 # with libxml2.so.2
+    buildsystem: autotools
+    config-opts:
+      - --disable-static
+      - --without-python
+    cleanup: [/share, /bin]
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/libxml2/2.13/libxml2-2.13.8.tar.xz
+        sha256: 277294cb33119ab71b2bc81f2f445e9bc9435b893ad15bb2cd2b0e859a0ee84a
+
+  # The runtime's libxslt is built against libxml2 2.14 and imports ~180 libxml2
+  # symbols unversioned, so with the compat libxml2 above in the search path its
+  # calls would split across both libxml2 copies at random. Building libxslt here
+  # against the same libxml2 keeps the pair consistent.
+  - name: libxslt
+    buildsystem: autotools
+    config-opts:
+      - --disable-static
+      - --without-python
+    cleanup: [/share, /bin]
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.43.tar.xz
+        sha256: 5a3d6b383ca5afc235b171118e90f5ff6aa27e9fea3303065231a6d403f0183a
+
+  # Likewise the runtime carries libtiff.so.6 (soname bumped in libtiff 4.5),
+  # while the bundled qtiff image plugin still links libtiff.so.5.
+  - name: libtiff # with libtiff.so.5
+    buildsystem: autotools
+    config-opts:
+      - --disable-static
+      - --disable-webp # would otherwise pick up the libwebp built above
+      - --disable-zstd
+      - --disable-lzma
+      - --disable-jbig
+    cleanup: [/share, /bin]
+    sources:
+      - type: archive
+        url: https://download.osgeo.org/libtiff/tiff-4.4.0.tar.gz
+        sha256: 917223b37538959aca3b790d2d73aa6e626b688e02dcda272aec24c2f498abed
+
   - name: plex-binaries
     buildsystem: simple
     build-commands:
@@ -109,7 +158,9 @@ modules:
       - /lib/libdrm.so*
       - /lib/libdrm_*.so*
       - /lib/libpciaccess.so*
-      - /lib/libswresample.so*
+      # NOTE: libswresample is deliberately NOT cleaned up. The bundled
+      # libavcodec.so.59/libavfilter.so.8 link against libswresample.so.4
+      # (ffmpeg 5.x); the 26.08 runtime only ships libswresample.so.6.
       - /lib/libva.so*
       - /lib/libva-*.so*
     sources:
